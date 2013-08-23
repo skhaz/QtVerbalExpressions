@@ -3,8 +3,8 @@
 #include "QVerbalExpressions.h"
 
 QVerbalExpressions::QVerbalExpressions()
-: modifiers(0)
 {
+    modifiers = QRegularExpression::NoMatchOption;
 }
 
 QVerbalExpressions& QVerbalExpressions::add(const QString& value)
