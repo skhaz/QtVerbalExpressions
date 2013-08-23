@@ -4,7 +4,7 @@
 
 #include <QChar>
 #include <QString>
-#include <QRegExp>
+#include <QRegularExpression>
 
 #ifdef Q_COMPILER_INITIALIZER_LISTS
 #include <initializer_list>
@@ -45,26 +45,14 @@ class QVerbalExpressions
 
         bool test(const QString& value);
 
-        const QString replace(const QString& source, const QString& value);
-
-        unsigned int modifiers;
-
-    protected:
-        unsigned int checkFlags();
-
-        const QString reduceLines(const QString& value);
+        QString replace(QString& source, const QString& value);
 
     private:
-        enum Flags {
-            GLOBAL = 1,
-            MULTILINE = 2,
-            CASEINSENSITIVE = 4
-        };
-
         QString prefixes;
         QString	source;
         QString suffixes;
         QString pattern;
+        QRegularExpression::PatternOptions modifiers;
 };
 
 #endif

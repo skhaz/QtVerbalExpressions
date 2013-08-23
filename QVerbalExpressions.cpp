@@ -1,4 +1,5 @@
 
+#include <QDebug>
 #include "QVerbalExpressions.h"
 
 QVerbalExpressions::QVerbalExpressions()
@@ -16,13 +17,13 @@ QVerbalExpressions& QVerbalExpressions::add(const QString& value)
 
 QVerbalExpressions& QVerbalExpressions::startOfLine(bool enable)
 {
-    prefixes = enabled ? "^" : "";
+    prefixes = enable ? "^" : "";
     return add();
 }
 
 QVerbalExpressions& QVerbalExpressions::endOfLine(bool enable)
 {
-    prefixes = enabled ? "$" : "";
+    suffixes = enable ? "$" : "";
     return add();
 }
 
@@ -96,15 +97,15 @@ QVerbalExpressions& QVerbalExpressions::addModifier(char modifier)
     switch (modifier)
     {
         case 'i':
-            modifiers |= CASEINSENSITIVE;
+            modifiers |= QRegularExpression::CaseInsensitiveOption;
             break;
 
         case 'm':
-            modifiers |= MULTILINE;
+            modifiers |= QRegularExpression::MultilineOption;
             break;
 
         case 'g':
-            modifiers |= GLOBAL;
+            // TODO
             break;
 
         default:
@@ -119,15 +120,15 @@ QVerbalExpressions& QVerbalExpressions::removeModifier(char modifier)
     switch (modifier)
     {
         case 'i':
-            modifiers ^= CASEINSENSITIVE;
+            modifiers ^= QRegularExpression::CaseInsensitiveOption;
             break;
 
         case 'm':
-            modifiers ^= MULTILINE;
+            modifiers ^= QRegularExpression::MultilineOption;
             break;
 
         case 'g':
-            modifiers ^= GLOBAL;
+            // TODO
             break;
 
         default:
@@ -170,7 +171,7 @@ QVerbalExpressions& QVerbalExpressions::searchGlobal(bool enable)
 
 QVerbalExpressions& QVerbalExpressions::multiple(const QString& value)
 {
-    if (!value.startsWith(QChar('*')) || !value.startsWith(QChar('*')))
+    if (!value.startsWith('*') || !value.startsWith('*'))
         add("+");
 
     return add(value);
@@ -178,11 +179,11 @@ QVerbalExpressions& QVerbalExpressions::multiple(const QString& value)
 
 QVerbalExpressions& QVerbalExpressions::alt(const QString& value)
 {
-    if (!prefixes.contains(QChar('(')))
-        prefixes += QChar('(');
+    if (!prefixes.contains('('))
+        prefixes += '(';
 
-    if (!suffixes.contains(QChar(')')))
-        suffixes = QChar(')') % suffixes;
+    if (!suffixes.contains(')'))
+        suffixes = ')' % suffixes;
 
     add(")|(");
     return then(value);
@@ -191,24 +192,19 @@ QVerbalExpressions& QVerbalExpressions::alt(const QString& value)
 #ifdef Q_COMPILER_INITIALIZER_LISTS
 QVerbalExpressions& QVerbalExpressions::range(const std::initializer_list<QString> & args)
 {
+    // TODO
+    return *this;
 }
 #endif
 
 bool QVerbalExpressions::test(const QString& value)
 {
     /// TODO
-    QString toTest;
-    if (modifiers & MULTILINE)
-        toTest = value;
-    else
-        toTest = reduceLines(value);
 
-    if (modifiers & GLOBAL)
-        return toTest.contains(QRegExp(pattern /* XXX */ ));
-    else
-        return toTest.contains(QRegExp(pattern /* XXX */ ));
+    return value.contains(QRegularExpression(pattern, modifiers));
 }
 
-const QString QVerbalExpressions::replace(const QString& source, const QString& value)
+QString QVerbalExpressions::replace(QString& source, const QString& value)
 {
+    return source.replace(QRegularExpression(pattern), value);
 }
