@@ -5,7 +5,7 @@
 
 
 
-int main(int argc, char **argv)
+int main()
 {
     {
         auto expression = QVerbalExpressions()

@@ -14,6 +14,10 @@ class QVerbalExpressions
 {
     public:
         QVerbalExpressions();
+        QVerbalExpressions(const QVerbalExpressions& other);
+        QVerbalExpressions(const QVerbalExpressions&& other);
+        QVerbalExpressions& operator=(const QVerbalExpressions& other);
+        QVerbalExpressions& operator=(const QVerbalExpressions&& other);
         QVerbalExpressions& add(const QString& value = QString());
         QVerbalExpressions& startOfLine(bool enable = true);
         QVerbalExpressions& endOfLine(bool enable = true);
@@ -38,15 +42,13 @@ class QVerbalExpressions
         QVerbalExpressions& multiple(const QString& value);
         QVerbalExpressions& alt(const QString& value);
 
-        #ifdef Q_COMPILER_INITIALIZER_LISTS
-        QVerbalExpressions& range(const std::initializer_list<QString> & args);
-        #endif
-
         bool test(const QString& value);
-
         QString replace(QString& source, const QString& value);
-
         friend QDebug operator<< (QDebug debug, const QVerbalExpressions& expression);
+
+        #ifdef Q_COMPILER_INITIALIZER_LISTS
+        QVerbalExpressions& range(const std::initializer_list<QString>& args);
+        #endif
 
     private:
         QString prefixes;

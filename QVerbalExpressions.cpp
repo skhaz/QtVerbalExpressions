@@ -189,8 +189,9 @@ QVerbalExpressions& QVerbalExpressions::alt(const QString& value)
 }
 
 #ifdef Q_COMPILER_INITIALIZER_LISTS
-QVerbalExpressions& QVerbalExpressions::range(const std::initializer_list<QString> & args)
+QVerbalExpressions& QVerbalExpressions::range(const std::initializer_list<QString>& args)
 {
+    Q_UNUSED(args)
     // TODO
     return *this;
 }
