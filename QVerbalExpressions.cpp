@@ -4,7 +4,6 @@
 
 QVerbalExpressions::QVerbalExpressions()
 {
-    modifiers = QRegularExpression::NoMatchOption;
 }
 
 QVerbalExpressions& QVerbalExpressions::add(const QString& value)
@@ -199,12 +198,22 @@ QVerbalExpressions& QVerbalExpressions::range(const std::initializer_list<QStrin
 
 bool QVerbalExpressions::test(const QString& value)
 {
-    /// TODO
+    auto re = QRegularExpression(pattern, modifiers);
 
-    return value.contains(QRegularExpression(pattern, modifiers));
+    // TODO
+    // if (global)
+    //     re.globalMatc...
+
+    return value.contains(re);
 }
 
 QString QVerbalExpressions::replace(QString& source, const QString& value)
 {
     return source.replace(QRegularExpression(pattern), value);
+}
+
+QDebug operator<< (QDebug debug, const QVerbalExpressions& expression)
+{
+    debug << expression.pattern;
+    return debug;
 }

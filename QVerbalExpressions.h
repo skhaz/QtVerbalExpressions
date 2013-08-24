@@ -14,7 +14,6 @@ class QVerbalExpressions
 {
     public:
         QVerbalExpressions();
-
         QVerbalExpressions& add(const QString& value = QString());
         QVerbalExpressions& startOfLine(bool enable = true);
         QVerbalExpressions& endOfLine(bool enable = true);
@@ -46,6 +45,8 @@ class QVerbalExpressions
         bool test(const QString& value);
 
         QString replace(QString& source, const QString& value);
+
+        friend QDebug operator<< (QDebug debug, const QVerbalExpressions& expression);
 
     private:
         QString prefixes;

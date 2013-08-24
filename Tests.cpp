@@ -18,7 +18,7 @@ int main(int argc, char **argv)
             .anythingBut(" ")
             .endOfLine();
 
-        qDebug() << expression.test("https://www.google.com");
+        qDebug() << expression << expression.test("https://www.google.com");
     }
 
     {
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
         auto expression = QVerbalExpressions()
             .find("bird");
 
-        qDebug() << expression.replace(replaceMe, "duck");
+        qDebug() << expression << expression.replace(replaceMe, "duck");
     }
 
 
