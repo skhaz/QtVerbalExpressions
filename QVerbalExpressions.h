@@ -15,9 +15,13 @@ class QVerbalExpressions
     public:
         QVerbalExpressions();
         QVerbalExpressions(const QVerbalExpressions& other);
-        QVerbalExpressions(const QVerbalExpressions&& other);
         QVerbalExpressions& operator=(const QVerbalExpressions& other);
+
+        #ifdef Q_COMPILER_RVALUE_REFS
+        QVerbalExpressions(const QVerbalExpressions&& other);
         QVerbalExpressions& operator=(const QVerbalExpressions&& other);
+        #endif
+
         QVerbalExpressions& add(const QString& value = QString());
         QVerbalExpressions& startOfLine(bool enable = true);
         QVerbalExpressions& endOfLine(bool enable = true);

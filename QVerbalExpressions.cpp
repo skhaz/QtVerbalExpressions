@@ -1,10 +1,61 @@
 
-#include <QDebug>
 #include "QVerbalExpressions.h"
+
+#include <QDebug>
+
+#ifdef Q_COMPILER_RVALUE_REFS
+# include <utility>
+#endif
 
 QVerbalExpressions::QVerbalExpressions()
 {
 }
+
+QVerbalExpressions::QVerbalExpressions(const QVerbalExpressions& other)
+: prefixes(other.prefixes)
+, source(other.source)
+, suffixes(other.suffixes)
+, pattern(other.pattern)
+, modifiers(other.modifiers)
+{
+}
+
+QVerbalExpressions& QVerbalExpressions::operator=(const QVerbalExpressions& other)
+{
+    if (this != &other) {
+        prefixes = other.prefixes;
+        source = other.source;
+        suffixes = other.suffixes;
+        pattern = other.pattern;
+        modifiers = other.modifiers;
+    }
+
+    return *this;
+}
+
+#ifdef Q_COMPILER_RVALUE_REFS
+QVerbalExpressions::QVerbalExpressions(const QVerbalExpressions&& other)
+: prefixes(std::move(other.prefixes))
+, source(std::move(other.source))
+, suffixes(std::move(other.suffixes))
+, pattern(std::move(other.pattern))
+, modifiers(std::move(other.modifiers))
+{
+}
+
+QVerbalExpressions& QVerbalExpressions::operator=(const QVerbalExpressions&& other)
+{
+    if (this != &other) {
+        prefixes = std::move(other.prefixes);
+        source = std::move(other.source);
+        suffixes = std::move(other.suffixes);
+        pattern = std::move(other.pattern);
+        modifiers = other.modifiers;
+    }
+
+    return *this;
+}
+#endif
 
 QVerbalExpressions& QVerbalExpressions::add(const QString& value)
 {
@@ -218,3 +269,4 @@ QDebug operator<< (QDebug debug, const QVerbalExpressions& expression)
     debug << expression.pattern;
     return debug;
 }
+
